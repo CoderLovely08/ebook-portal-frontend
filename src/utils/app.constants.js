@@ -136,3 +136,9 @@ export const getMainNavigation = () => [
   routes.ATTENDANCE,
   routes.HOLIDAYS,
 ];
+
+export const environmentVariables = {
+  BASE_DEV_API_URL: import.meta.env.VITE_DEV_API_URL,
+  BASE_PROD_API_URL: import.meta.env.VITE_PROD_API_URL,
+  ENV: import.meta.env.VITE_ENV,
+};
