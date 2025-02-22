@@ -1,4 +1,4 @@
-import { Calendar, CalendarCheck, LayoutDashboard, Users } from "lucide-react";
+import { Calendar, CalendarCheck, LayoutDashboard, List, Users } from "lucide-react";
 
 export const routes = {
   CORE: {
@@ -19,123 +19,35 @@ export const routes = {
         path: "/dashboard/overview",
         routeKey: "overview",
       },
-      analytics: {
-        path: "/dashboard/analytics",
-        routeKey: "analytics",
-      },
     },
     items: [
       {
         title: "Overview",
         url: "/dashboard/overview",
       },
-      {
-        title: "Analytics",
-        url: "/dashboard/analytics",
-      },
     ],
   },
-  EMPLOYEES: {
-    title: "Employees",
-    routeKey: "employees",
-    path: "/employees",
-    icon: Users,
+  COMPONENTS: {
+    title: "Components",
+    routeKey: "components",
+    path: "/components",
+    icon: List,
     routes: {
-      list: {
-        path: "/employees/list",
-        routeKey: "list",
-      },
-      create: {
-        path: "/employees/create",
-        routeKey: "create",
-      },
-      rfid: {
-        path: "/employees/rfid",
-        routeKey: "rfid",
+      dataTable: {
+        path: "/components/data-table",
+        routeKey: "dataTable",
       },
     },
     items: [
       {
-        title: "Employee List",
-        url: "/employees/list",
-      },
-      {
-        title: "Add Employee",
-        url: "/employees/create",
-      },
-      {
-        title: "RFID Management",
-        url: "/employees/rfid",
-      },
-    ],
-  },
-  ATTENDANCE: {
-    title: "Attendance",
-    routeKey: "attendance",
-    path: "/attendance",
-    icon: CalendarCheck,
-    routes: {
-      daily: {
-        path: "/attendance/daily",
-        routeKey: "daily",
-      },
-      monthly: {
-        path: "/attendance/monthly",
-        routeKey: "monthly",
-      },
-      timings: {
-        path: "/attendance/timings",
-        routeKey: "timings",
-      },
-    },
-    items: [
-      {
-        title: "Daily Attendance",
-        url: "/attendance/daily",
-      },
-      {
-        title: "Monthly Report",
-        url: "/attendance/monthly",
-      },
-      {
-        title: "Work Timings",
-        url: "/attendance/timings",
-      },
-    ],
-  },
-  HOLIDAYS: {
-    title: "Holidays",
-    routeKey: "holidays",
-    icon: Calendar,
-    routes: {
-      list: {
-        path: "/holidays/list",
-        routeKey: "list",
-      },
-      create: {
-        path: "/holidays/create",
-        routeKey: "create",
-      },
-    },
-    items: [
-      {
-        title: "Holiday List",
-        url: "/holidays/list",
-      },
-      {
-        title: "Add Holiday",
-        url: "/holidays/create",
+        title: "Data Table",
+        url: "/components/data-table",
       },
     ],
   },
 };
 
-export const getMainNavigation = () => [
-  routes.DASHBOARD,
-  routes.EMPLOYEES,
-  routes.ATTENDANCE,
-  routes.HOLIDAYS,
-];
+export const getMainNavigation = () => [routes.DASHBOARD, routes.COMPONENTS];
 
 export const environmentVariables = {
   BASE_DEV_API_URL: import.meta.env.VITE_DEV_API_URL,
