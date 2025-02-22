@@ -1,6 +1,8 @@
 import { GenericTable } from "@/components/custom/utils/GenericTable";
 import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
 import React from "react";
+import AddDialog from "./AddDialog";
 
 const dummyTableData = {
   columns: [
@@ -14,6 +16,13 @@ const dummyTableData = {
   searchFields: ["name", "designation"],
   filterField: "designation",
   rowActions: (row) => <Button>View {row.name}</Button>,
+  additionalElement: (
+    <AddDialog
+      title="Add User"
+      description="Add a new user to the table"
+      actionTrigger={<Button>Add User</Button>}
+    />
+  ),
 };
 
 const GenericTableComp = () => {
