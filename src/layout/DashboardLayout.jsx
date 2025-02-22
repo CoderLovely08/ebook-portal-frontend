@@ -1,5 +1,5 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import Container from "@/components/custom/Container";
+import Container from "@/components/custom/utils/Container";
 
 import { Separator } from "@/components/ui/separator";
 import {

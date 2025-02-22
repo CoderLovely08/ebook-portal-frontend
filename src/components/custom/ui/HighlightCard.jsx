@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
-import LoadingSpinner from "../LoadingSpiner";
+import LoadingSpinner from "../utils/LoadingSpiner";
 
 const HighlightCard = ({
   title = "",
