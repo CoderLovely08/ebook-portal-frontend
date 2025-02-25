@@ -2,7 +2,9 @@ import { handleGetRequest } from "@/api/common.api";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
-export const useFetch = (url, queryKey, staleTime = 30000) => {
+export const useFetch = (url, queryKey, options) => {
+  const generatedQueryKey = Array.isArray(queryKey) ? queryKey : [queryKey];
+
   const {
     data: responseData,
     error: responseError,
@@ -11,12 +13,11 @@ export const useFetch = (url, queryKey, staleTime = 30000) => {
     isError: responseIsError,
     isFetched: responseIsFetched,
   } = useQuery({
-    queryKey: [queryKey],
-    staleTime,
+    queryKey: generatedQueryKey,
     queryFn: async () => handleGetRequest(url),
   });
 
-  if (responseIsError) {
+  if (responseIsError && options?.showToast) {
     toast.error(responseError?.message);
   }
 
