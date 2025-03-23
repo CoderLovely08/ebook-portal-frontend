@@ -15,6 +15,10 @@ export const routes = {
         routeKey: "home",
         title: "Home",
     },
+    AUTH: {
+        LOGIN: "/login",
+        REGISTER: "signup",
+    },
     DASHBOARD: {
         title: "Dashboard",
         routeKey: "dashboard",
@@ -64,4 +68,11 @@ export const environmentVariables = {
     BASE_DEV_API_URL: import.meta.env.VITE_DEV_API_URL,
     BASE_PROD_API_URL: import.meta.env.VITE_PROD_API_URL,
     ENV: import.meta.env.VITE_ENV,
+};
+
+export const apiRoutes = {
+    AUTH: {
+        LOGIN: "/auth/system/login",
+        REGISTER: "/auth/system/register",
+    },
 };

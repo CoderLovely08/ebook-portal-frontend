@@ -6,12 +6,19 @@ import UnderConstruction from "@/components/custom/utils/UnderConstruction";
 import { routes } from "@/utils/app.constants";
 import GenericTableComp from "@/pages/Components/GenericTableComp";
 import { BusPassLandingPage } from "@/pages/Landing/LandingPage";
+import LoginForm from "@/pages/Auth/LoginPage";
 
 export const applicationRouter = createBrowserRouter([
     {
         path: "/",
         element: <BusPassLandingPage />,
     },
+
+    {
+        path: routes.AUTH.LOGIN,
+        element: <LoginForm />,
+    },
+
     {
         path: routes.CORE.DASHBOARD,
         element: <DashboardLayout />,

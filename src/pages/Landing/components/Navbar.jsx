@@ -1,4 +1,6 @@
+import { routes } from "@/utils/app.constants";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,44 +18,44 @@ const Navbar = () => {
                         </span>
                     </div>
                     <div className="hidden md:flex items-center space-x-10">
-                        <a
-                            href="#home"
+                        <Link
+                            to={routes.CORE.path}
                             className="text-gray-700 hover:text-blue-600 transition"
                         >
                             Home
-                        </a>
-                        <a
-                            href="#features"
+                        </Link>
+                        <Link
+                            to="#features"
                             className="text-gray-700 hover:text-blue-600 transition"
                         >
                             Features
-                        </a>
-                        <a
-                            href="#how-it-works"
+                        </Link>
+                        <Link
+                            to="#how-it-works"
                             className="text-gray-700 hover:text-blue-600 transition"
                         >
                             How It Works
-                        </a>
-                        <a
-                            href="#contact"
+                        </Link>
+                        <Link
+                            to="#contact"
                             className="text-gray-700 hover:text-blue-600 transition"
                         >
                             Contact
-                        </a>
+                        </Link>
                     </div>
                     <div className="hidden md:flex items-center space-x-4">
-                        <a
-                            href="#"
+                        <Link
+                            to={routes.AUTH.LOGIN}
                             className="bg-white text-blue-700 border border-blue-700 px-5 py-2 rounded-md hover:bg-blue-50 transition"
                         >
                             Login
-                        </a>
-                        <a
-                            href="#"
+                        </Link>
+                        <Link
+                            to={routes.AUTH.REGISTER}
                             className="bg-blue-700 text-white px-5 py-2 rounded-md hover:bg-blue-800 transition"
                         >
                             Register
-                        </a>
+                        </Link>
                     </div>
                     <div className="md:hidden flex items-center">
                         <button
@@ -98,43 +100,43 @@ const Navbar = () => {
             {/* Mobile Menu */}
             {isMenuOpen && (
                 <div className="md:hidden bg-white px-4 pt-2 pb-4 shadow-md">
-                    <a
-                        href="#home"
+                    <Link
+                        to={routes.CORE.path}
                         className="block py-2 text-gray-700 hover:text-blue-600"
                     >
                         Home
-                    </a>
-                    <a
-                        href="#features"
+                    </Link>
+                    <Link
+                        to="#features"
                         className="block py-2 text-gray-700 hover:text-blue-600"
                     >
                         Features
-                    </a>
-                    <a
-                        href="#how-it-works"
+                    </Link>
+                    <Link
+                        to="#how-it-works"
                         className="block py-2 text-gray-700 hover:text-blue-600"
                     >
                         How It Works
-                    </a>
-                    <a
-                        href="#contact"
+                    </Link>
+                    <Link
+                        to="#contact"
                         className="block py-2 text-gray-700 hover:text-blue-600"
                     >
                         Contact
-                    </a>
+                    </Link>
                     <div className="flex flex-col space-y-2 mt-4">
-                        <a
-                            href="#"
+                        <Link
+                            to={routes.AUTH.LOGIN}
                             className="bg-white text-blue-700 border border-blue-700 px-5 py-2 rounded-md hover:bg-blue-50 transition text-center"
                         >
                             Login
-                        </a>
-                        <a
-                            href="#"
+                        </Link>
+                        <Link
+                            to={routes.AUTH.REGISTER}
                             className="bg-blue-700 text-white px-5 py-2 rounded-md hover:bg-blue-800 transition text-center"
                         >
                             Register
-                        </a>
+                        </Link>
                     </div>
                 </div>
             )}
