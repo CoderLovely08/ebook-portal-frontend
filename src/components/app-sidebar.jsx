@@ -14,13 +14,19 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { getMainNavigation, routes } from "@/utils/app.constants";
+import {
+    getAdminNavigation,
+    getUserNavigation,
+    routes,
+    USER_TYPES,
+} from "@/utils/app.constants";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "@/store/slices/auth.slice";
 
 export function AppSidebar({ ...props }) {
     const data = useSelector(selectUser);
+    const isAdmin = data.userType.name === USER_TYPES.ADMIN;
 
     return (
         <Sidebar variant="inset" {...props}>
@@ -46,7 +52,9 @@ export function AppSidebar({ ...props }) {
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
-                <NavMain items={getMainNavigation()} />
+                <NavMain
+                    items={isAdmin ? getAdminNavigation() : getUserNavigation()}
+                />
             </SidebarContent>
             <SidebarFooter>
                 <NavUser user={data} />
