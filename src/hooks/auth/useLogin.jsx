@@ -1,15 +1,17 @@
 import { handlePostRequest } from "@/api/common.api";
 import { loginFormSchema } from "@/schemas/schemas";
 import { setUser } from "@/store/slices/auth.slice";
-import { apiRoutes } from "@/utils/app.constants";
+import { apiRoutes, routes } from "@/utils/app.constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export const useLogin = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const adminLoginForm = useForm({
         resolver: zodResolver(loginFormSchema),
@@ -28,6 +30,7 @@ export const useLogin = () => {
 
         onSuccess: (data) => {
             dispatch(setUser(data?.data));
+            navigate(routes.DASHBOARD.routes.overview.path);
 
             toast.success("Login successful");
         },
@@ -42,12 +45,14 @@ export const useLogin = () => {
 
 export const useLogout = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    const logutAdmin = () => {
+    const logout = () => {
         let confirmLogout = window.confirm("Are you sure you want to logout?");
 
         if (confirmLogout) {
             dispatch(setUser(null));
+            navigate(routes.AUTH.LOGIN);
             toast.success("Logout successful");
             // logoutMutation();
         }
@@ -63,5 +68,5 @@ export const useLogout = () => {
     //     },
     // });
 
-    return { logutAdmin };
+    return { logout };
 };
