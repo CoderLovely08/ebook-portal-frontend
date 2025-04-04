@@ -3,11 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Users, Clock, ChevronRight, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { apiRoutes, QUERY_KEYS } from "@/utils/app.constants";
+import { apiRoutes, QUERY_KEYS, routes } from "@/utils/app.constants";
 import { useFetch } from "@/hooks/common/useFetch";
 import { formatDistance } from "date-fns";
 import EmptyState from "@/components/custom/utils/EmptyState";
 import LoadingSpinner from "@/components/custom/utils/LoadingSpiner";
+import { Link } from "react-router-dom";
 
 const RecentUsers = () => {
     const { responseData: users, responseIsLoading } = useFetch(
@@ -29,9 +30,11 @@ const RecentUsers = () => {
                     <Users className="h-5 w-5" />
                     Recent Users
                 </CardTitle>
-                <Button variant="ghost" size="sm" className="text-xs">
-                    View All
-                    <ChevronRight className="ml-1 h-4 w-4" />
+                <Button asChild size="sm" className="text-xs">
+                    <Link to={routes.ADMIN.routes.users.path}>
+                        View All
+                        <ChevronRight className="ml-1 h-4 w-4" />
+                    </Link>
                 </Button>
             </CardHeader>
             <CardContent>

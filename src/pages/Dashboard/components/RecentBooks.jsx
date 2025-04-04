@@ -11,12 +11,13 @@ import {
     Coins,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { apiRoutes, QUERY_KEYS } from "@/utils/app.constants";
+import { apiRoutes, QUERY_KEYS, routes } from "@/utils/app.constants";
 import { useFetch } from "@/hooks/common/useFetch";
 import { formatDistance } from "date-fns";
 import EmptyState from "@/components/custom/utils/EmptyState";
 import LoadingSpinner from "@/components/custom/utils/LoadingSpiner";
 import CategoriesList from "./CategoriesList";
+import { Link } from "react-router-dom";
 
 const RecentBooks = () => {
     const { responseData: booksData, responseIsLoading } = useFetch(
@@ -50,9 +51,11 @@ const RecentBooks = () => {
                     <Book className="h-5 w-5" />
                     Recent Books
                 </CardTitle>
-                <Button variant="ghost" size="sm" className="text-xs">
-                    View All
-                    <ChevronRight className="ml-1 h-4 w-4" />
+                <Button size="sm" className="text-xs" asChild>
+                    <Link to={routes.ADMIN.routes.books.path}>
+                        View All
+                        <ChevronRight className="ml-1 h-4 w-4" />
+                    </Link>
                 </Button>
             </CardHeader>
             <CardContent>

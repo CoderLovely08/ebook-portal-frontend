@@ -7,6 +7,7 @@ import { routes } from "@/utils/app.constants";
 import LoginForm from "@/pages/Auth/LoginPage";
 import GenericTableComp from "@/pages/Components/GenericTableComp";
 import EbookPortal from "@/pages/Landing/LandingPage";
+import ViewAllUsers from "@/pages/Admin/Users/ViewAllUsers";
 
 // Placeholder for all pages
 const PlaceholderPage = ({ title }) => (
@@ -65,7 +66,7 @@ export const applicationRouter = createBrowserRouter([
             },
             {
                 path: routes.ADMIN.routes.users.path,
-                element: <PlaceholderPage title="User Management" />,
+                element: <ViewAllUsers />,
             },
             {
                 path: routes.ADMIN.routes.books.path,
