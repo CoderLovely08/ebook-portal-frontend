@@ -7,11 +7,12 @@ import { routes } from "@/utils/app.constants";
 import LandingPage from "@/pages/Landing/LandingPage";
 import LoginForm from "@/pages/Auth/LoginPage";
 import GenericTableComp from "@/pages/Components/GenericTableComp";
+import EbookPortal from "@/pages/Landing/LandingPage";
 
 export const applicationRouter = createBrowserRouter([
   {
     path: "/",
-    element: <LandingPage />,
+    element: <EbookPortal />,
   },
 
   {
