@@ -9,6 +9,7 @@ import GenericTableComp from "@/pages/Components/GenericTableComp";
 import EbookPortal from "@/pages/Landing/LandingPage";
 import ViewAllUsers from "@/pages/Admin/Users/ViewAllUsers";
 import BookDetails from "@/pages/Catalog/BookDetails";
+import ViewAllCategories from "@/pages/Admin/Categories/ViewAllCategories";
 
 // Placeholder for all pages
 const PlaceholderPage = ({ title }) => (
@@ -85,7 +86,7 @@ export const applicationRouter = createBrowserRouter([
             },
             {
                 path: routes.ADMIN.routes.categories.path,
-                element: <PlaceholderPage title="Categories Management" />,
+                element: <ViewAllCategories />,
             },
             {
                 path: routes.ADMIN.routes.purchases.path,
