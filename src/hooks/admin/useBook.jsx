@@ -25,12 +25,23 @@ export const useBook = () => {
     });
 
     const onSubmit = (data) => {
-        console.log(data);
+        const formData = new FormData();
+        formData.append("title", data.title);
+        formData.append("author", data.author);
+        formData.append("description", data.description);
+        formData.append("price", data.price);
+        formData.append("isFree", data.isFree);
+        formData.append("publishedDate", data.publishedDate);
+        formData.append("coverImage", data.coverImage);
+        formData.append("filePath", data.filePath);
+        formData.append("categories", data.categories);
+        createBookMutation(formData);
     };
 
     const { mutate: createBookMutation, isPending: isCreatingBook } =
         useMutation({
-            mutationFn: (data) => handlePostRequest(apiRoutes.BOOKS.BASE, data),
+            mutationFn: (data) =>
+                handlePostRequest(apiRoutes.BOOKS.CREATE, data),
             onSuccess: () => {
                 toast.success("Book created successfully");
                 createBookForm.reset();

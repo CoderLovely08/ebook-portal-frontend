@@ -212,6 +212,7 @@ export const apiRoutes = {
     BOOKS: {
         BASE: (page, limit, search, type) =>
             `/books?page=${page}&limit=${limit}&search=${search}&type=${type}`,
+        CREATE: "/books",
         GET_BY_ID: (id) => `/books/${id}`,
         UPDATE: (id) => `/books/${id}`,
         DELETE: (id) => `/books/${id}`,

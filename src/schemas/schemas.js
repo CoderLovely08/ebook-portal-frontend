@@ -18,9 +18,17 @@ export const createBookFormSchema = z.object({
             message: "Author is required",
         })
         .min(3, { message: "Author must be at least 3 characters long" }),
-    description: z.string({
-        required_error: "Description is required",
-        message: "Description is required",
+    description: z
+        .string({
+            required_error: "Description is required",
+            message: "Description is required",
+        })
+        .min(10, {
+            message: "Description must be at least 10 characters long",
+        }),
+    categories: z.array(z.string(), {
+        required_error: "Categories are required",
+        message: "Categories are required",
     }),
     price: z.coerce.number({
         required_error: "Price is required",
@@ -31,12 +39,10 @@ export const createBookFormSchema = z.object({
         required_error: "Published date is required",
         message: "Published date is required",
     }),
-    coverImage: z.string({
-        required_error: "Cover image is required",
-        message: "Cover image is required",
+    coverImage: z.instanceof(File, {
+        message: "Cover image must be a valid file",
     }),
-    filePath: z.string({
-        required_error: "File path is required",
-        message: "File path is required",
+    filePath: z.instanceof(File, {
+        message: "Book PDF must be a valid file",
     }),
 });

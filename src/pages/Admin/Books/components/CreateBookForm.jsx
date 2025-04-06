@@ -23,11 +23,29 @@ import { Calendar as CalendarIcon, Plus, Upload } from "lucide-react";
 import { useBook } from "@/hooks/admin/useBook";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { useEffect } from "react";
+import { MultiSelect } from "@/components/ui/multi-select";
+import { useFetch } from "@/hooks/common/useFetch";
+import { apiRoutes, QUERY_KEYS } from "@/utils/app.constants";
+import LoadingSpinner from "@/components/custom/utils/LoadingSpiner";
 
 export default function CreateBookForm() {
     const { createBookForm, onSubmit, isCreatingBook } = useBook();
 
+    const { responseData: categories, isLoading: isLoadingCategories } =
+        useFetch(apiRoutes.CATEGORIES.BASE, QUERY_KEYS.CATEGORIES.ALL);
+
+    const formattedCategories = categories?.map((category) => ({
+        label: category.name,
+        value: category.id,
+    }));
+
     // Watch the isFree field
+    useEffect(() => {
+        if (createBookForm.watch("isFree")) {
+            createBookForm.setValue("price", 0);
+        }
+    }, [createBookForm.watch("isFree")]);
 
     return (
         <Card className="p-6">
@@ -90,6 +108,32 @@ export default function CreateBookForm() {
                                             className="min-h-[120px] resize-none"
                                             {...field}
                                         />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={createBookForm.control}
+                            name="categories"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Categories</FormLabel>
+                                    <FormControl>
+                                        {isLoadingCategories ? (
+                                            <LoadingSpinner />
+                                        ) : (
+                                            <MultiSelect
+                                                options={formattedCategories ?? []}
+                                                defaultValue={field.value}
+                                                onValueChange={(value) =>
+                                                    field.onChange(value)
+                                                }
+                                                placeholder="Select categories"
+                                                maxCount={5}
+                                            ></MultiSelect>
+                                        )}
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -213,6 +257,7 @@ export default function CreateBookForm() {
                                                     type="file"
                                                     accept="image/*"
                                                     className="cursor-pointer"
+                                                    required
                                                     onChange={(e) =>
                                                         field.onChange(
                                                             e.target.files?.[0]
@@ -242,6 +287,7 @@ export default function CreateBookForm() {
                                                     type="file"
                                                     accept=".pdf"
                                                     className="cursor-pointer"
+                                                    required
                                                     onChange={(e) =>
                                                         field.onChange(
                                                             e.target.files?.[0]
@@ -275,10 +321,7 @@ export default function CreateBookForm() {
                                     Creating...
                                 </>
                             ) : (
-                                <>
-                                    <Plus className="h-4 w-4" />
-                                    Add Book
-                                </>
+                                <>Submit</>
                             )}
                         </Button>
                     </div>

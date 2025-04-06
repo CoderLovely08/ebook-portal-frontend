@@ -2,11 +2,9 @@ import Container from "@/components/custom/utils/Container";
 import { GenericTable } from "@/components/custom/utils/GenericTable";
 import GoBackButton from "@/components/custom/utils/GoBackButton";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { useFetch } from "@/hooks/common/useFetch";
-import GenericTableComp from "@/pages/Components/GenericTableComp";
 import { apiRoutes, QUERY_KEYS } from "@/utils/app.constants";
-import { formatDate } from "date-fns";
+import { format } from "date-fns";
 import React from "react";
 
 const ViewAllUsers = () => {
@@ -39,11 +37,9 @@ const ViewAllUsers = () => {
             },
             {
                 field: "createdAt",
-                header: "Created At",
+                header: "Registered at",
                 render: (value) => {
-                    return (
-                        <span>{formatDate(value, "dd MMM yyyy HH:mm a")}</span>
-                    );
+                    return <span>{format(value, "dd MMM yyyy HH:mm a")}</span>;
                 },
             },
         ],
