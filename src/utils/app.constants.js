@@ -142,6 +142,11 @@ export const routes = {
                 path: "/dashboard/admin/categories",
                 routeKey: "categories",
             },
+            categoryDetails: {
+                path: "/dashboard/admin/categories/:id",
+                getPath: (id) => `/dashboard/admin/categories/${id}`,
+                routeKey: "categoryDetails",
+            },
             purchases: {
                 path: "/dashboard/admin/purchases",
                 routeKey: "purchases",

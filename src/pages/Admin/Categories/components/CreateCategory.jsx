@@ -21,12 +21,16 @@ const CreateCategoryDialog = () => {
     const [categoryName, setCategoryName] = useState("");
     const [description, setDescription] = useState("");
 
-    const { func, onSuccess, onError } = createCategory();
+    const {
+        func: createCategoryFunc,
+        onSuccess: createCategoryOnSuccess,
+        onError: createCategoryOnError,
+    } = createCategory();
 
     const { performMutation, isPendingMutation } = useCustomMutation(
-        func,
-        onSuccess,
-        onError
+        createCategoryFunc,
+        createCategoryOnSuccess,
+        createCategoryOnError
     );
 
     const handleSubmit = async (e) => {
