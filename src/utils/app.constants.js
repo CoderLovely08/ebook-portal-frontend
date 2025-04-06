@@ -136,16 +136,17 @@ export const routes = {
             },
             bookDetails: {
                 path: "/dashboard/admin/books/:id",
+                getPath: (id) => `/dashboard/admin/books/${id}`,
                 routeKey: "bookDetails",
             },
             categories: {
                 path: "/dashboard/admin/categories",
                 routeKey: "categories",
             },
-            categoryDetails: {
-                path: "/dashboard/admin/categories/:id",
-                getPath: (id) => `/dashboard/admin/categories/${id}`,
-                routeKey: "categoryDetails",
+            booksByCategory: {
+                path: "/dashboard/admin/categories/:id/books",
+                getPath: (id) => `/dashboard/admin/categories/${id}/books`,
+                routeKey: "booksByCategory",
             },
             purchases: {
                 path: "/dashboard/admin/purchases",

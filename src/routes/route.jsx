@@ -10,6 +10,7 @@ import EbookPortal from "@/pages/Landing/LandingPage";
 import ViewAllUsers from "@/pages/Admin/Users/ViewAllUsers";
 import BookDetails from "@/pages/Catalog/BookDetails";
 import ViewAllCategories from "@/pages/Admin/Categories/ViewAllCategories";
+import CategoryDetails from "@/pages/Admin/Categories/CategoryDetails";
 
 // Placeholder for all pages
 const PlaceholderPage = ({ title }) => (
@@ -87,6 +88,10 @@ export const applicationRouter = createBrowserRouter([
             {
                 path: routes.ADMIN.routes.categories.path,
                 element: <ViewAllCategories />,
+            },
+            {
+                path: routes.ADMIN.routes.booksByCategory.path,
+                element: <CategoryDetails />,
             },
             {
                 path: routes.ADMIN.routes.purchases.path,

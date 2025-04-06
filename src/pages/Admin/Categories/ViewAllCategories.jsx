@@ -81,7 +81,7 @@ const CategoryCard = ({ category }) => {
                             <Edit className="h-4 w-4 text-primary" />
                         </Button>
                     </Link>
-                    <Link to={routes.ADMIN.routes.categoryDetails.getPath(category.id)}>
+                    <Link to={routes.ADMIN.routes.booksByCategory.getPath(category.id)}>
                         <Button
                             variant="ghost"
                             size="sm"
