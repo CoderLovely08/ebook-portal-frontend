@@ -10,6 +10,7 @@ import Container from "@/components/custom/utils/Container";
 import LoadingSpinner from "@/components/custom/utils/LoadingSpiner";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
+import CreateCategoryDialog from "./components/CreateCategory";
 
 const ViewAllCategories = () => {
     const [searchQuery, setSearchQuery] = useState("");
@@ -51,10 +52,7 @@ const ViewAllCategories = () => {
                             Manage and organize book categories
                         </p>
                     </div>
-                    <Button>
-                        <Plus className="mr-2 h-4 w-4" />
-                        Add Category
-                    </Button>
+                    <CreateCategoryDialog />
                 </div>
 
                 {/* Search Bar */}
