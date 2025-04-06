@@ -139,6 +139,10 @@ export const routes = {
                 getPath: (id) => `/dashboard/admin/books/${id}`,
                 routeKey: "bookDetails",
             },
+            createBook: {
+                path: "/dashboard/admin/books/create",
+                routeKey: "createBook",
+            },
             categories: {
                 path: "/dashboard/admin/categories",
                 routeKey: "categories",

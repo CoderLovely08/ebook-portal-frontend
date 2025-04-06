@@ -12,6 +12,8 @@ import BookDetails from "@/pages/Catalog/BookDetails";
 import ViewAllCategories from "@/pages/Admin/Categories/ViewAllCategories";
 import CategoryDetails from "@/pages/Admin/Categories/CategoryDetails";
 import ViewAllBooks from "@/pages/Admin/Books/VIewAllBooks";
+import CreateBook from "@/pages/Admin/Books/components/CreateBookForm";
+import AddNewBook from "@/pages/Admin/Books/AddNewBook";
 
 // Placeholder for all pages
 const PlaceholderPage = ({ title }) => (
@@ -85,6 +87,10 @@ export const applicationRouter = createBrowserRouter([
             {
                 path: routes.ADMIN.routes.bookDetails.path,
                 element: <BookDetails />,
+            },
+            {
+                path: routes.ADMIN.routes.createBook.path,
+                element: <AddNewBook />,
             },
             {
                 path: routes.ADMIN.routes.categories.path,

@@ -21,11 +21,12 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { useFetch } from "@/hooks/common/useFetch";
-import { apiRoutes, QUERY_KEYS } from "@/utils/app.constants";
+import { apiRoutes, QUERY_KEYS, routes } from "@/utils/app.constants";
 import Container from "@/components/custom/utils/Container";
 import LoadingSpinner from "@/components/custom/utils/LoadingSpiner";
-import BookCard from "./BookCard";
+import BookCard from "./components/BookCard";
 import useDebounce from "@/hooks/common/useDebounce";
+import { Link } from "react-router-dom";
 
 const ViewAllBooks = () => {
     const [searchInput, setSearchInput] = useState("");
@@ -86,9 +87,11 @@ const ViewAllBooks = () => {
                             Browse and manage your book collection
                         </p>
                     </div>
-                    <Button>
-                        <Plus className="mr-2 h-4 w-4" /> Add Book
-                    </Button>
+                    <Link to={routes.ADMIN.routes.createBook.path}>
+                        <Button>
+                            <Plus className="mr-2 h-4 w-4" /> Add Book
+                        </Button>
+                    </Link>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
