@@ -2,7 +2,7 @@ import { useFetch } from "@/hooks/common/useFetch";
 import { apiRoutes, QUERY_KEYS, routes } from "@/utils/app.constants";
 import { generateDynaimcParamRoute } from "@/utils/app.utils";
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import {
     Book,
     Star,
@@ -76,7 +76,10 @@ const BookCard = ({ book }) => {
                                 </span>
                             </div>
                         </div>
-                        <PdfViewerModal title={book?.title} path={book?.filePath}>
+                        <PdfViewerModal
+                            title={book?.title}
+                            path={book?.filePath}
+                        >
                             <Button variant="ghost" size="sm" className="p-2">
                                 <BookOpen className="h-4 w-4" />
                             </Button>
@@ -90,6 +93,8 @@ const BookCard = ({ book }) => {
 
 const CategoryDetails = () => {
     const { id } = useParams();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const name = searchParams.get("name");
 
     const { responseData: books, responseIsLoading: isBooksLoading } = useFetch(
         apiRoutes.CATEGORIES.GET_BOOKS(id),
@@ -113,9 +118,7 @@ const CategoryDetails = () => {
                 {/* Header Section */}
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold">
-                            Books in Category
-                        </h1>
+                        <h1 className="text-3xl font-bold">Books in {name}</h1>
                         <p className="text-gray-500 mt-1">
                             Browse and manage books in this category
                         </p>

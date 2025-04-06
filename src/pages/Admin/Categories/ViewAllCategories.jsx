@@ -13,8 +13,11 @@ import { Link } from "react-router-dom";
 import CreateCategoryDialog from "./components/CreateCategory";
 import { deleteCategory } from "@/api/methods.api";
 import { useCustomMutation } from "@/hooks/common/useCustomMutation";
+import { selectIsAdmin } from "@/store/slices/auth.slice";
+import { useSelector } from "react-redux";
 
 const CategoryCard = ({ category }) => {
+    const isAdmin = useSelector(selectIsAdmin);
 
     const {
         func: deleteCategoryFunc,
@@ -22,14 +25,19 @@ const CategoryCard = ({ category }) => {
         onError: deleteCategoryOnError,
     } = deleteCategory();
 
-    const { performMutation: deleteCategoryMutation, isPendingMutation: isDeletingCategory } = useCustomMutation(
+    const {
+        performMutation: deleteCategoryMutation,
+        isPendingMutation: isDeletingCategory,
+    } = useCustomMutation(
         deleteCategoryFunc,
         deleteCategoryOnSuccess,
         deleteCategoryOnError
     );
 
     const handleDelete = async (id) => {
-        let confirm = window.confirm("Are you sure you want to delete this category?");
+        let confirm = window.confirm(
+            "Are you sure you want to delete this category?"
+        );
         if (confirm) {
             deleteCategoryMutation(id);
         }
@@ -53,15 +61,21 @@ const CategoryCard = ({ category }) => {
                         </Badge>
                     </div>
                 </div>
-                <Button
-                    variant="destructive"
-                    size="sm"
-                    className="absolute top-2 right-2 z-10 hover:bg-red-600 hover:text-white transition-colors duration-200 p-2"
-                    onClick={() => handleDelete(category.id)}
-                    disabled={isDeletingCategory}
-                >
-                    {isDeletingCategory ? <LoadingSpinner /> : <Trash className="h-4 w-4" />}
-                </Button>
+                {isAdmin && (
+                    <Button
+                        variant="destructive"
+                        size="sm"
+                        className="absolute top-2 right-2 z-10 hover:bg-red-600 hover:text-white transition-colors duration-200 p-2"
+                        onClick={() => handleDelete(category.id)}
+                        disabled={isDeletingCategory}
+                    >
+                        {isDeletingCategory ? (
+                            <LoadingSpinner />
+                        ) : (
+                            <Trash className="h-4 w-4" />
+                        )}
+                    </Button>
+                )}
             </div>
 
             <p className="mt-4 text-gray-600 line-clamp-2">
@@ -76,12 +90,16 @@ const CategoryCard = ({ category }) => {
 
                 {/* Action Buttons */}
                 <div className="flex items-center gap-2">
-                    <Link to={routes.ADMIN.routes.categories.path}>
+                    {/* <Link to={routes.ADMIN.routes.categories.path}>
                         <Button variant="ghost" size="sm" className="p-2">
                             <Edit className="h-4 w-4 text-primary" />
                         </Button>
-                    </Link>
-                    <Link to={routes.ADMIN.routes.booksByCategory.getPath(category.id)}>
+                    </Link> */}
+                    <Link
+                        to={routes[
+                            isAdmin ? "ADMIN" : "CATALOG"
+                        ].routes.booksByCategory.getPath(category.id, category.name)}
+                    >
                         <Button
                             variant="ghost"
                             size="sm"
@@ -98,8 +116,6 @@ const CategoryCard = ({ category }) => {
 
 const ViewAllCategories = () => {
     const [searchQuery, setSearchQuery] = useState("");
-    const [page, setPage] = useState(1);
-    const [limit] = useState(12);
 
     const {
         responseData: categories,

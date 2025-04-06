@@ -58,6 +58,7 @@ export const routes = {
         title: "Catalog",
         routeKey: "catalog",
         path: "/dashboard/catalog",
+        isActive: true,
         icon: Book,
         routes: {
             books: {
@@ -67,6 +68,12 @@ export const routes = {
             categories: {
                 path: "/dashboard/catalog/categories",
                 routeKey: "categories",
+            },
+            booksByCategory: {
+                path: "/dashboard/catalog/categories/:id/books",
+                getPath: (id, name) =>
+                    `/dashboard/catalog/categories/${id}/books?name=${name}`,
+                routeKey: "booksByCategory",
             },
         },
         items: [
@@ -87,6 +94,7 @@ export const routes = {
         routeKey: "user-content",
         path: "/dashboard/my-content",
         icon: Library,
+        isActive: true,
         routes: {
             library: {
                 path: "/dashboard/my-content/library",
@@ -199,7 +207,7 @@ export const getAdminNavigation = (isAdmin = false) => {
 };
 
 export const getUserNavigation = (isAdmin = false) => {
-    const navigation = [routes.DASHBOARD, routes.CATALOG, routes.USER_CONTENT];
+    const navigation = [routes.USER_CONTENT, routes.CATALOG];
 
     return navigation;
 };
@@ -258,7 +266,7 @@ export const apiRoutes = {
     },
     FINANCIAL: {
         OVERVIEW: "/financial/overview",
-        TRENDS: (startDate, endDate) => 
+        TRENDS: (startDate, endDate) =>
             `/financial/trends?startDate=${startDate}&endDate=${endDate}`,
     },
 };
@@ -300,7 +308,11 @@ const QUERY_KEYS = Object.freeze({
     },
     FINANCIAL: {
         OVERVIEW: "financial-overview",
-        TRENDS: (startDate, endDate) => ["financial-trends", startDate, endDate],
+        TRENDS: (startDate, endDate) => [
+            "financial-trends",
+            startDate,
+            endDate,
+        ],
     },
 });
 
@@ -333,9 +345,8 @@ export const highlightCardsData = [
     },
 ];
 
-
 export const ORDER_STATUS = {
     PENDING: "PENDING",
     COMPLETED: "COMPLETED",
     CANCELLED: "CANCELLED",
-  };
+};

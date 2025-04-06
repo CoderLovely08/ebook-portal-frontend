@@ -1,3 +1,4 @@
+import { USER_TYPES } from "@/utils/app.constants";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -21,4 +22,6 @@ const authSlice = createSlice({
 
 export const { setUser, clearUser } = authSlice.actions;
 export const selectUser = (state) => state?.auth?.user;
+export const selectIsAdmin = (state) =>
+    state?.auth?.user?.userType?.name === USER_TYPES.ADMIN;
 export default authSlice.reducer;

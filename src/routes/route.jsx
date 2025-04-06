@@ -57,11 +57,15 @@ export const applicationRouter = createBrowserRouter([
             // Catalog Routes
             {
                 path: routes.CATALOG.routes.books.path,
-                element: <PlaceholderPage title="Books Catalog" />,
+                element: <ViewAllBooks />,
             },
             {
                 path: routes.CATALOG.routes.categories.path,
-                element: <PlaceholderPage title="Categories" />,
+                element: <ViewAllCategories />,
+            },
+            {
+                path: routes.CATALOG.routes.booksByCategory.path,
+                element: <CategoryDetails />,
             },
 
             // User Content Routes

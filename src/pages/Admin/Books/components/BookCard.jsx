@@ -4,11 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { routes } from "@/utils/app.constants";
 import { format } from "date-fns";
-import { BookOpen, ExternalLink } from "lucide-react";
+import { BookOpen, ExternalLink, ShoppingCart } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 
 const BookCard = ({ book }) => {
+    const isFree = book.isFree;
     return (
         <Card className="flex flex-col md:flex-row gap-4 p-4 hover:border-primary/50 border border-transparent transition-all duration-200">
             <div className="w-full md:w-48 h-48 md:h-64 flex-shrink-0">
@@ -40,8 +41,8 @@ const BookCard = ({ book }) => {
                             </h3>
                             <p className="text-gray-500">{book.author}</p>
                         </div>
-                        <Badge variant={book.isFree ? "success" : "default"}>
-                            {book.isFree ? "Free" : `₹${book.price}`}
+                        <Badge variant={isFree ? "success" : "default"}>
+                            {isFree ? "Free" : `₹${book.price}`}
                         </Badge>
                     </div>
                     <div className="flex flex-wrap gap-2 mt-2">
@@ -74,12 +75,19 @@ const BookCard = ({ book }) => {
                             </span>
                         </div>
                     </div>
-                    <PdfViewerModal title={book.title} path={book.filePath}>
-                        <Button variant="outline" size="sm">
-                            <BookOpen className="h-4 w-4 mr-2" />
-                            Preview
+                    {isFree ? (
+                        <PdfViewerModal title={book.title} path={book.filePath}>
+                            <Button variant="outline" size="sm">
+                                <BookOpen className="h-4 w-4 mr-2" />
+                                Preview
+                            </Button>
+                        </PdfViewerModal>
+                    ) : (
+                        <Button size="sm">
+                            <ShoppingCart className="h-4 w-4 mr-2" />
+                            Buy Now
                         </Button>
-                    </PdfViewerModal>
+                    )}
                 </div>
             </div>
         </Card>

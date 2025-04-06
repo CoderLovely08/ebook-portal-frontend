@@ -27,8 +27,12 @@ import LoadingSpinner from "@/components/custom/utils/LoadingSpiner";
 import BookCard from "./components/BookCard";
 import useDebounce from "@/hooks/common/useDebounce";
 import { Link } from "react-router-dom";
+import { selectIsAdmin } from "@/store/slices/auth.slice";
+import { useSelector } from "react-redux";
 
 const ViewAllBooks = () => {
+    const isAdmin = useSelector(selectIsAdmin);
+
     const [searchInput, setSearchInput] = useState("");
     const [filters, setFilters] = useState({
         search: "",
@@ -89,11 +93,13 @@ const ViewAllBooks = () => {
                             Browse and manage your book collection
                         </p>
                     </div>
-                    <Link to={routes.ADMIN.routes.createBook.path}>
-                        <Button>
-                            <Plus className="mr-2 h-4 w-4" /> Add Book
-                        </Button>
-                    </Link>
+                    {isAdmin && (
+                        <Link to={routes.ADMIN.routes.createBook.path}>
+                            <Button>
+                                <Plus className="mr-2 h-4 w-4" /> Add Book
+                            </Button>
+                        </Link>
+                    )}
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
