@@ -8,6 +8,7 @@ import LoginForm from "@/pages/Auth/LoginPage";
 import GenericTableComp from "@/pages/Components/GenericTableComp";
 import EbookPortal from "@/pages/Landing/LandingPage";
 import ViewAllUsers from "@/pages/Admin/Users/ViewAllUsers";
+import BookDetails from "@/pages/Catalog/BookDetails";
 
 // Placeholder for all pages
 const PlaceholderPage = ({ title }) => (
@@ -44,6 +45,8 @@ export const applicationRouter = createBrowserRouter([
                 path: routes.DASHBOARD.routes.home.path,
                 element: <PlaceholderPage title="Dashboard Home" />,
             },
+
+            // Catalog Routes
             {
                 path: routes.CATALOG.routes.books.path,
                 element: <PlaceholderPage title="Books Catalog" />,
@@ -52,6 +55,8 @@ export const applicationRouter = createBrowserRouter([
                 path: routes.CATALOG.routes.categories.path,
                 element: <PlaceholderPage title="Categories" />,
             },
+
+            // User Content Routes
             {
                 path: routes.USER_CONTENT.routes.library.path,
                 element: <PlaceholderPage title="My Library" />,
@@ -64,6 +69,8 @@ export const applicationRouter = createBrowserRouter([
                 path: routes.USER_CONTENT.routes.reviews.path,
                 element: <PlaceholderPage title="My Reviews" />,
             },
+
+            // Admin Routes
             {
                 path: routes.ADMIN.routes.users.path,
                 element: <ViewAllUsers />,
@@ -71,6 +78,10 @@ export const applicationRouter = createBrowserRouter([
             {
                 path: routes.ADMIN.routes.books.path,
                 element: <PlaceholderPage title="Books Management" />,
+            },
+            {
+                path: routes.ADMIN.routes.bookDetails.path,
+                element: <BookDetails />,
             },
             {
                 path: routes.ADMIN.routes.categories.path,
@@ -84,6 +95,8 @@ export const applicationRouter = createBrowserRouter([
                 path: routes.ADMIN.routes.stats.path,
                 element: <PlaceholderPage title="Admin Statistics" />,
             },
+
+            // Core Routes
             {
                 path: routes.CORE.UNDER_CONSTRUCTION,
                 element: <UnderConstruction />,

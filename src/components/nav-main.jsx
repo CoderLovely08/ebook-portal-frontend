@@ -17,6 +17,7 @@ import {
     SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { Link, useLocation } from "react-router-dom";
+import { Badge } from "./ui/badge";
 
 export function NavMain({ items }) {
     const pathname = useLocation();
@@ -62,18 +63,23 @@ export function NavMain({ items }) {
                                                     <SidebarMenuSubButton
                                                         asChild
                                                     >
-                                                        <Link
-                                                            to={subItem.url}
-                                                            className={`${
-                                                                pathname.pathname ===
-                                                                subItem.url
-                                                                    ? "bg-primary text-white hover:bg-green-500 hover:text-white"
-                                                                    : ""
-                                                            }`}
-                                                        >
-                                                            <span>
-                                                                {subItem.title}
-                                                            </span>
+                                                        <Link to={subItem.url}>
+                                                            {pathname.pathname ===
+                                                            subItem.url ? (
+                                                                <Badge className="bg-green-500 text-white w-full text-md m-0">
+                                                                    <span>
+                                                                        {
+                                                                            subItem.title
+                                                                        }
+                                                                    </span>
+                                                                </Badge>
+                                                            ) : (
+                                                                <span>
+                                                                    {
+                                                                        subItem.title
+                                                                    }
+                                                                </span>
+                                                            )}
                                                         </Link>
                                                     </SidebarMenuSubButton>
                                                 </SidebarMenuSubItem>

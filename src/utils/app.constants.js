@@ -134,6 +134,10 @@ export const routes = {
                 path: "/dashboard/admin/books",
                 routeKey: "books",
             },
+            bookDetails: {
+                path: "/dashboard/admin/books/:id",
+                routeKey: "bookDetails",
+            },
             categories: {
                 path: "/dashboard/admin/categories",
                 routeKey: "categories",

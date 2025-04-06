@@ -18,6 +18,7 @@ import EmptyState from "@/components/custom/utils/EmptyState";
 import LoadingSpinner from "@/components/custom/utils/LoadingSpiner";
 import CategoriesList from "./CategoriesList";
 import { Link } from "react-router-dom";
+import { generateDynaimcParamRoute } from "@/utils/app.utils";
 
 const RecentBooks = () => {
     const { responseData: booksData, responseIsLoading } = useFetch(
@@ -70,47 +71,57 @@ const RecentBooks = () => {
                                 key={book.id}
                                 className="relative rounded-lg border p-4 transition-colors hover:bg-muted/50"
                             >
-                                <div className="flex items-start gap-2">
-                                    <div className="flex items-center gap-2 max-sm:hidden">
-                                        <img
-                                            src={book.coverImage}
-                                            alt={book.title}
-                                            className="w-12 h-12 rounded-md"
-                                        />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <div className="flex items-center gap-2">
-                                            <Book className="h-4 w-4 text-muted-foreground" />
-                                            <h4 className="font-medium">
-                                                {book.title}
-                                            </h4>
-                                            <Badge
-                                                variant={getStatusBadgeVariant(
-                                                    book.isFree
-                                                )}
-                                            >
-                                                {book.isFree ? "Free" : "Paid"}
-                                            </Badge>
-                                        </div>
-
-                                        <div className="flex flex-col sm:flex-row gap-4 mt-2">
-                                            <span className="text-sm flex items-center gap-1">
-                                                <Coins className="h-3 w-3 text-muted-foreground" />
-                                                ₹{book.price}
-                                            </span>
-
-                                            <span className="text-xs text-muted-foreground flex items-center gap-1">
-                                                <Clock className="h-3 w-3" />
-                                                {formatTime(book.createdAt)}
-                                            </span>
-                                        </div>
-
-                                        <div className="flex items-center gap-2">
-                                            <CategoriesList
-                                                categories={book.categories}
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-start gap-2">
+                                        <div className="flex items-center gap-2 max-sm:hidden">
+                                            <img
+                                                src={book.coverImage}
+                                                alt={book.title}
+                                                className="w-12 h-12 rounded-md"
                                             />
                                         </div>
+                                        <div className="space-y-1">
+                                            <div className="flex items-center gap-2">
+                                                <Book className="h-4 w-4 text-muted-foreground" />
+                                                <h4 className="font-medium">
+                                                    {book.title}
+                                                </h4>
+                                                <Badge
+                                                    variant={getStatusBadgeVariant(
+                                                        book.isFree
+                                                    )}
+                                                >
+                                                    {book.isFree
+                                                        ? "Free"
+                                                        : "Paid"}
+                                                </Badge>
+                                            </div>
+                                            <div className="flex flex-col sm:flex-row gap-4 mt-2">
+                                                <span className="text-sm flex items-center gap-1">
+                                                    <Coins className="h-3 w-3 text-muted-foreground" />
+                                                    ₹{book.price}
+                                                </span>
+                                                <span className="text-xs text-muted-foreground flex items-center gap-1">
+                                                    <Clock className="h-3 w-3" />
+                                                    {formatTime(book.createdAt)}
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <CategoriesList
+                                                    categories={book.categories}
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
+                                    <Link
+                                        to={generateDynaimcParamRoute(
+                                            routes.ADMIN.routes.bookDetails
+                                                .path,
+                                            book.id
+                                        )}
+                                    >
+                                        <ChevronRight className="h-8 w-8 bg-primary text-white rounded-md p-1" />
+                                    </Link>
                                 </div>
                             </div>
                         ))}
