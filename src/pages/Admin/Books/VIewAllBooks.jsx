@@ -44,7 +44,7 @@ const ViewAllBooks = () => {
 
     // Update filters when debounced search changes
     useEffect(() => {
-        setFilters(prev => ({ ...prev, search: debouncedSearch, page: 1 }));
+        setFilters((prev) => ({ ...prev, search: debouncedSearch, page: 1 }));
     }, [debouncedSearch]);
 
     const {
@@ -56,7 +56,9 @@ const ViewAllBooks = () => {
             filters.page,
             filters.limit,
             filters.search,
-            filters.type
+            filters.type,
+            filters.category,
+            filters.sort
         ),
         [QUERY_KEYS.BOOKS.ALL, filters]
     );
@@ -214,6 +216,21 @@ const ViewAllBooks = () => {
                                     </SelectContent>
                                 </Select>
                             </div>
+                            <Button
+                                variant="outline"
+                                onClick={() => {
+                                    setFilters({
+                                        search: "",
+                                        category: "",
+                                        type: "all",
+                                        sort: "desc",
+                                        page: 1,
+                                        limit: 10,
+                                    });
+                                }}
+                            >
+                                Reset
+                            </Button>
                         </div>
                     </Card>
 

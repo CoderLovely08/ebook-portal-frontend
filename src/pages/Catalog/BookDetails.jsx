@@ -20,6 +20,7 @@ import LoadingSpinner from "@/components/custom/utils/LoadingSpiner";
 import NotFoundPage from "@/components/custom/utils/NotFoundPage";
 import { selectUser } from "@/store/slices/auth.slice";
 import { useSelector } from "react-redux";
+import PdfViewerModal from "@/components/custom/ui/PdfDocViewer";
 
 const BookDetails = () => {
     const { id } = useParams();
@@ -50,7 +51,11 @@ const BookDetails = () => {
         avgRating,
         reviewCount,
         publishedDate,
+        filePath,
     } = book;
+
+    console.log(book);
+    
 
     return (
         <Container>
@@ -76,21 +81,33 @@ const BookDetails = () => {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="space-y-2">
-                                    <Button className="w-full" size="lg">
-                                        {isFree ? (
-                                            <>
-                                                <BookOpen className="mr-2 h-5 w-5" />
-                                                Read Now
-                                            </>
-                                        ) : (
-                                            <>
-                                                <ShoppingCart className="mr-2 h-5 w-5" />
-                                                Buy for ₹{price}
-                                            </>
-                                        )}
-                                    </Button>
-                                </div>
+                                {!isAdmin ? (
+                                    <div className="space-y-2">
+                                        <Button className="w-full" size="lg">
+                                            {isFree ? (
+                                                <>
+                                                    <BookOpen className="mr-2 h-5 w-5" />
+                                                    Read Now
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <ShoppingCart className="mr-2 h-5 w-5" />
+                                                    Buy for ₹{price}
+                                                </>
+                                            )}
+                                        </Button>
+                                    </div>
+                                ) : (
+                                    <PdfViewerModal
+                                        path={filePath}
+                                        title={title}
+                                    >
+                                        <Button className="w-full">
+                                            <BookOpen className="mr-2 h-5 w-5" />
+                                            Read Now
+                                        </Button>
+                                    </PdfViewerModal>
+                                )}
                             </div>
                         </Card>
                     </div>

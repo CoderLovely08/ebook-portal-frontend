@@ -124,6 +124,7 @@ export const routes = {
         routeKey: "admin",
         path: "/dashboard/admin",
         icon: Settings,
+        isActive: true,
         isAdmin: true,
         routes: {
             users: {
@@ -182,6 +183,11 @@ export const routes = {
                 url: "/dashboard/admin/purchases",
                 icon: ShoppingCart,
             },
+            {
+                title: "Statistics",
+                url: "/dashboard/admin/stats",
+                icon: LineChart,
+            },
         ],
     },
 };
@@ -210,8 +216,8 @@ export const apiRoutes = {
         REGISTER: "/auth/system/register",
     },
     BOOKS: {
-        BASE: (page, limit, search, type) =>
-            `/books?page=${page}&limit=${limit}&search=${search}&type=${type}`,
+        BASE: (page, limit, search, type, category, sort) =>
+            `/books?page=${page}&limit=${limit}&search=${search}&type=${type}&category=${category}&sort=${sort}`,
         CREATE: "/books",
         GET_BY_ID: (id) => `/books/${id}`,
         UPDATE: (id) => `/books/${id}`,
@@ -250,6 +256,11 @@ export const apiRoutes = {
         PURCHASES: "/admin/purchases",
         STATS: "/admin/stats",
     },
+    FINANCIAL: {
+        OVERVIEW: "/financial/overview",
+        TRENDS: (startDate, endDate) => 
+            `/financial/trends?startDate=${startDate}&endDate=${endDate}`,
+    },
 };
 
 const QUERY_KEYS = Object.freeze({
@@ -287,6 +298,10 @@ const QUERY_KEYS = Object.freeze({
         PROFILE: "user-profile",
         PREFERENCES: "user-preferences",
     },
+    FINANCIAL: {
+        OVERVIEW: "financial-overview",
+        TRENDS: (startDate, endDate) => ["financial-trends", startDate, endDate],
+    },
 });
 
 export { QUERY_KEYS };
@@ -317,3 +332,10 @@ export const highlightCardsData = [
         subText: "Total number of categories",
     },
 ];
+
+
+export const ORDER_STATUS = {
+    PENDING: "PENDING",
+    COMPLETED: "COMPLETED",
+    CANCELLED: "CANCELLED",
+  };

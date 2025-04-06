@@ -47,8 +47,14 @@ const DashboardOverview = () => {
 
             {/* Recent Daata */}
             <div className="grid grid-cols-2 max-lg:grid-cols-1 gap-3 my-4">
-                <RecentBooks />
-                <RecentUsers />
+                <RecentBooks
+                    booksData={statistics?.recent?.books}
+                    isLoading={responseIsLoading}
+                />
+                <RecentUsers
+                    users={statistics?.recent?.users}
+                    isLoading={responseIsLoading}
+                />
             </div>
         </Container>
     );

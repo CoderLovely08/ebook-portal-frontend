@@ -10,12 +10,7 @@ import EmptyState from "@/components/custom/utils/EmptyState";
 import LoadingSpinner from "@/components/custom/utils/LoadingSpiner";
 import { Link } from "react-router-dom";
 
-const RecentUsers = () => {
-    const { responseData: users, responseIsLoading } = useFetch(
-        apiRoutes.ADMIN.USERS(1, 10, ""),
-        QUERY_KEYS.ADMIN.USERS
-    );
-
+const RecentUsers = ({ users, isLoading }) => {
     // Function to format time relative to now
     const formatTime = (timestamp) => {
         return formatDistance(new Date(timestamp), new Date(), {
@@ -38,13 +33,13 @@ const RecentUsers = () => {
                 </Button>
             </CardHeader>
             <CardContent>
-                {responseIsLoading ? (
+                {isLoading ? (
                     <LoadingSpinner />
                 ) : !users || users?.length === 0 ? (
                     <EmptyState Icon={Users} message="No recent users" />
                 ) : (
                     <div className="space-y-4">
-                        {users.data?.map((user) => (
+                        {users?.map((user) => (
                             <div
                                 key={user.id}
                                 className="relative rounded-lg border p-4 transition-colors hover:bg-muted/50"
@@ -55,16 +50,11 @@ const RecentUsers = () => {
                                             <h4 className="font-medium">
                                                 {user.fullName}
                                             </h4>
-                                            {user.userType && (
-                                                <Badge variant="outline">
-                                                    {user.userType.name}
-                                                </Badge>
-                                            )}
                                         </div>
 
                                         <p className="text-sm text-muted-foreground flex items-center gap-1">
                                             <Mail className="h-3 w-3" />
-                                            {user.author}
+                                            {user.email}
                                         </p>
 
                                         <div className="flex items-center gap-4 mt-2">

@@ -14,6 +14,8 @@ import CategoryDetails from "@/pages/Admin/Categories/CategoryDetails";
 import ViewAllBooks from "@/pages/Admin/Books/VIewAllBooks";
 import CreateBook from "@/pages/Admin/Books/components/CreateBookForm";
 import AddNewBook from "@/pages/Admin/Books/AddNewBook";
+import ViewPurchaseOrders from "@/pages/Admin/Purchases/ViewPurchaseOrders";
+import ViewStats from "@/pages/Admin/Stats/ViewStats";
 
 // Placeholder for all pages
 const PlaceholderPage = ({ title }) => (
@@ -102,11 +104,11 @@ export const applicationRouter = createBrowserRouter([
             },
             {
                 path: routes.ADMIN.routes.purchases.path,
-                element: <PlaceholderPage title="Purchases Management" />,
+                element: <ViewPurchaseOrders />,
             },
             {
                 path: routes.ADMIN.routes.stats.path,
-                element: <PlaceholderPage title="Admin Statistics" />,
+                element: <ViewStats />,
             },
 
             // Core Routes

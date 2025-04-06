@@ -4,10 +4,8 @@ import React from "react";
 const CategoriesList = ({ categories }) => {
     return (
         <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
-                <Badge key={category.id}>
-                    {category.name}
-                </Badge>
+            {categories?.map((category) => (
+                <Badge key={category.id}>{category.name}</Badge>
             ))}
         </div>
     );
