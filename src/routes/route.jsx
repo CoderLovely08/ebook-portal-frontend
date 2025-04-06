@@ -16,6 +16,7 @@ import CreateBook from "@/pages/Admin/Books/components/CreateBookForm";
 import AddNewBook from "@/pages/Admin/Books/AddNewBook";
 import ViewPurchaseOrders from "@/pages/Admin/Purchases/ViewPurchaseOrders";
 import ViewStats from "@/pages/Admin/Stats/ViewStats";
+import RegisterPage from "@/pages/Auth/RegisterPage";
 
 // Placeholder for all pages
 const PlaceholderPage = ({ title }) => (
@@ -37,7 +38,7 @@ export const applicationRouter = createBrowserRouter([
 
     {
         path: routes.AUTH.REGISTER,
-        element: <PlaceholderPage title="Register" />,
+        element: <RegisterPage />,
     },
 
     {

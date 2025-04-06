@@ -1,25 +1,25 @@
-import LoadingSpinner from "@/components/custom/utils/LoadingSpiner";
 import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
+    FormDescription,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useLogin } from "@/hooks/auth/useLogin";
-import { Eye, EyeOff, Lock } from "lucide-react";
+import { useRegister } from "@/hooks/auth/useRegister";
+import { routes } from "@/utils/app.constants";
 import { useState } from "react";
 import Navbar from "../Landing/components/Navbar";
 import { Link } from "react-router-dom";
-import { routes } from "@/utils/app.constants";
+import { Eye, EyeOff, Lock } from "lucide-react";
+import LoadingSpinner from "@/components/custom/utils/LoadingSpiner";
 
-export default function LoginForm() {
-    const { adminLoginForm, onSubmit, isSignInPending } = useLogin();
+export default function RegisterPage() {
+    const { registerForm, onSubmit, isRegistering } = useRegister();
     const [passwordVisible, setPasswordVisible] = useState(false);
-
     return (
         <div className="min-h-screen bg-white">
             <Navbar />
@@ -27,44 +27,62 @@ export default function LoginForm() {
                 <div className="w-full max-w-md">
                     {/* Logo Area */}
                     <div className="mb-4 text-center">
-                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-primary text-white mb-2">
-                            <Lock className="w-8 h-8" />
-                        </div>
                         <h1 className="text-2xl font-semibold text-gray-900">
-                            Login Portal
+                            Register Portal
                         </h1>
                     </div>
                     {/* Card */}
                     <div className="bg-white rounded-xl shadow-lg p-8 ring-1 ring-gray-200">
-                        <Form {...adminLoginForm}>
+                        <Form {...registerForm}>
                             <form
-                                onSubmit={adminLoginForm.handleSubmit(onSubmit)}
-                                className="space-y-3 max-w-full mx-auto"
+                                onSubmit={registerForm.handleSubmit(onSubmit)}
+                                className="space-y-2"
                             >
                                 <FormField
-                                    control={adminLoginForm.control}
+                                    control={registerForm.control}
+                                    name="fullName"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Full name</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder="John Wick"
+                                                    type="text"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={registerForm.control}
                                     name="email"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Email</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    placeholder="email@exmaple.com"
+                                                    placeholder="john@wick.com"
                                                     type="email"
                                                     {...field}
                                                 />
                                             </FormControl>
+
                                             <FormMessage />
                                         </FormItem>
                                     )}
                                 />
+
                                 <FormField
-                                    control={adminLoginForm.control}
+                                    control={registerForm.control}
                                     name="password"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Password</FormLabel>
-                                            <FormControl className="relative">
+                                            <FormControl>
                                                 <div className="relative">
                                                     <Input
                                                         placeholder="********"
@@ -92,33 +110,31 @@ export default function LoginForm() {
                                                     </button>
                                                 </div>
                                             </FormControl>
+
                                             <FormMessage />
                                         </FormItem>
                                     )}
                                 />
-                                <Button
-                                    type="submit"
-                                    disabled={isSignInPending}
-                                >
-                                    {isSignInPending
-                                        ? "Signing in..."
-                                        : "Sign in"}
-                                    {isSignInPending && (
+
+                                <Button type="submit" disabled={isRegistering}>
+                                    {isRegistering
+                                        ? "Signing up..."
+                                        : "Register"}
+                                    {isRegistering && (
                                         <LoadingSpinner spinnerColor="text-white" />
                                     )}
                                 </Button>
                             </form>
                         </Form>
-
                         {/* Register Link */}
                         <div className="mt-4 text-center">
                             <p className="text-sm text-gray-600">
-                                Don't have an account?{" "}
+                                Already have an account?{" "}
                                 <Link
-                                    to={routes.AUTH.REGISTER}
+                                    to={routes.AUTH.LOGIN}
                                     className="text-primary hover:text-primary/80 font-medium"
                                 >
-                                    Register here
+                                    Login here
                                 </Link>
                             </p>
                         </div>
