@@ -18,6 +18,7 @@ import Container from "@/components/custom/utils/Container";
 import LoadingSpinner from "@/components/custom/utils/LoadingSpiner";
 import { format } from "date-fns";
 import GoBackButton from "@/components/custom/utils/GoBackButton";
+import PdfViewerModal from "@/components/custom/ui/PdfDocViewer";
 
 const BookCard = ({ book }) => {
     return (
@@ -75,9 +76,11 @@ const BookCard = ({ book }) => {
                                 </span>
                             </div>
                         </div>
-                        <Button variant="ghost" size="sm" className="p-2">
-                            <BookOpen className="h-4 w-4" />
-                        </Button>
+                        <PdfViewerModal title={book?.title} path={book?.filePath}>
+                            <Button variant="ghost" size="sm" className="p-2">
+                                <BookOpen className="h-4 w-4" />
+                            </Button>
+                        </PdfViewerModal>
                     </div>
                 </div>
             </div>
