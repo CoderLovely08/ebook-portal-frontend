@@ -12,6 +12,7 @@ import {
     UserPlus,
 } from "lucide-react";
 import Navbar from "./components/Navbar";
+import { routes } from "@/utils/app.constants";
 
 const LandingPage = () => {
     const featuresData = [
@@ -73,10 +74,12 @@ const LandingPage = () => {
                                 experience.
                             </p>
                             <div className="flex gap-4">
-                                <button className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 shadow-lg shadow-green-100 flex items-center gap-2">
-                                    <UserPlus className="h-4 w-4" />
-                                    Register Now
-                                </button>
+                                <Link to={routes.AUTH.REGISTER}>
+                                    <button className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 shadow-lg shadow-green-100 flex items-center gap-2">
+                                        <UserPlus className="h-4 w-4" />
+                                        Register Now
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     </div>

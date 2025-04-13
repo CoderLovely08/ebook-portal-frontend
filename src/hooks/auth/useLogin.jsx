@@ -1,7 +1,7 @@
 import { handlePostRequest } from "@/api/common.api";
 import { loginFormSchema } from "@/schemas/schemas";
 import { setUser } from "@/store/slices/auth.slice";
-import { apiRoutes, routes } from "@/utils/app.constants";
+import { apiRoutes, routes, USER_TYPES } from "@/utils/app.constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -30,7 +30,11 @@ export const useLogin = () => {
 
         onSuccess: (data) => {
             dispatch(setUser(data?.data));
-            navigate(routes.DASHBOARD.routes.overview.path);
+            if (data?.data?.role === USER_TYPES.ADMIN) {
+                navigate(routes.DASHBOARD.routes.overview.path);
+            } else {
+                navigate(routes.USER_DASHBOARD.routes.home.path);
+            }
 
             toast.success("Login successful");
         },

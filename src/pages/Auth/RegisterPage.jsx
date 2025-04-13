@@ -28,7 +28,7 @@ export default function RegisterPage() {
                     {/* Logo Area */}
                     <div className="mb-4 text-center">
                         <h1 className="text-2xl font-semibold text-gray-900">
-                            Register Portal
+                            Let's get you started
                         </h1>
                     </div>
                     {/* Card */}

@@ -10,6 +10,7 @@ import {
     Settings,
     BookOpen,
     LineChart,
+    User,
 } from "lucide-react";
 
 export const USER_TYPES = {
@@ -42,17 +43,31 @@ export const routes = {
                 routeKey: "home",
             },
             overview: {
-                path: "/dashboard/overview",
+                path: "/dashboard/admin",
                 routeKey: "overview",
             },
         },
         items: [
             {
                 title: "Overview",
-                url: "/dashboard/overview",
+                url: "/dashboard/admin",
                 icon: LineChart,
             },
         ],
+    },
+    USER_DASHBOARD: {
+        title: "User Dashboard",
+        routeKey: "user-dashboard",
+        path: "/dashboard/user/home",
+        url: "/dashboard/user/home",
+        isActive: true,
+        icon: User,
+        routes: {
+            home: {
+                path: "/dashboard/user/home",
+                routeKey: "home",
+            },
+        },
     },
     CATALOG: {
         title: "Catalog",
@@ -64,6 +79,11 @@ export const routes = {
             books: {
                 path: "/dashboard/catalog/books",
                 routeKey: "books",
+            },
+            bookDetails: {
+                path: "/dashboard/catalog/books/:id",
+                getPath: (id) => `/dashboard/catalog/books/${id}`,
+                routeKey: "bookDetails",
             },
             categories: {
                 path: "/dashboard/catalog/categories",
@@ -207,7 +227,7 @@ export const getAdminNavigation = (isAdmin = false) => {
 };
 
 export const getUserNavigation = (isAdmin = false) => {
-    const navigation = [routes.USER_CONTENT, routes.CATALOG];
+    const navigation = [routes.USER_DASHBOARD, routes.USER_CONTENT, routes.CATALOG];
 
     return navigation;
 };
@@ -250,11 +270,14 @@ export const apiRoutes = {
     LIBRARY: {
         BASE: "/library",
         REMOVE_BOOK: (bookId) => `/library/${bookId}`,
+        ADD_BOOK: (bookId) => `/library/${bookId}`,
+        UPDATE_STATUS: (bookId) => `/library/${bookId}/status`,
     },
     PURCHASES: {
         BASE: "/purchases",
         GET_BY_ID: (id) => `/purchases/${id}`,
         UPDATE_STATUS: (id) => `/purchases/${id}/status`,
+        CREATE: "/purchases",
     },
     ADMIN: {
         USERS: (page, limit, search) =>
@@ -263,6 +286,12 @@ export const apiRoutes = {
             `/admin/books?page=${page}&limit=${limit}&search=${search}&type=${type}`,
         PURCHASES: "/admin/purchases",
         STATS: "/admin/stats",
+    },
+    USER_CONTENT: {
+        STATS: "/user/stats",
+        LIBRARY: "/library",
+        PURCHASES: "/purchases",
+        REVIEWS: "/reviews",
     },
     FINANCIAL: {
         OVERVIEW: "/financial/overview",
@@ -305,6 +334,10 @@ const QUERY_KEYS = Object.freeze({
     USER: {
         PROFILE: "user-profile",
         PREFERENCES: "user-preferences",
+        STATS: "user-stats",
+        LIBRARY: "user-library",
+        PURCHASES: "user-purchases",
+        REVIEWS: "user-reviews",
     },
     FINANCIAL: {
         OVERVIEW: "financial-overview",

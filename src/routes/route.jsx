@@ -2,7 +2,12 @@ import DashboardLayout from "@/layout/DashboardLayout";
 import { createBrowserRouter } from "react-router-dom";
 
 import DashboardOverview from "@/pages/Dashboard/DashboardOverview";
+import UserDashboardOverview from "@/pages/Dashboard/UserDashboardOverview";
+import MyLibrary from "@/pages/Dashboard/MyLibrary";
+import MyPurchases from "@/pages/Dashboard/MyPurchases";
+import MyReviews from "@/pages/Dashboard/MyReviews";
 import UnderConstruction from "@/components/custom/utils/UnderConstruction";
+import ProtectedRoute from "@/components/custom/utils/ProtectedRoute";
 import { routes } from "@/utils/app.constants";
 import LoginForm from "@/pages/Auth/LoginPage";
 import GenericTableComp from "@/pages/Components/GenericTableComp";
@@ -50,8 +55,8 @@ export const applicationRouter = createBrowserRouter([
                 element: <DashboardOverview />,
             },
             {
-                path: routes.DASHBOARD.routes.home.path,
-                element: <PlaceholderPage title="Dashboard Home" />,
+                path: routes.USER_DASHBOARD.routes.home.path,
+                element: <UserDashboardOverview />,
             },
 
             // Catalog Routes
@@ -67,53 +72,62 @@ export const applicationRouter = createBrowserRouter([
                 path: routes.CATALOG.routes.booksByCategory.path,
                 element: <CategoryDetails />,
             },
+            {
+                path: routes.CATALOG.routes.bookDetails.path,
+                element: <BookDetails />,
+            },
 
             // User Content Routes
             {
                 path: routes.USER_CONTENT.routes.library.path,
-                element: <PlaceholderPage title="My Library" />,
+                element: <MyLibrary />,
             },
             {
                 path: routes.USER_CONTENT.routes.purchases.path,
-                element: <PlaceholderPage title="My Purchases" />,
+                element: <MyPurchases />,
             },
             {
                 path: routes.USER_CONTENT.routes.reviews.path,
-                element: <PlaceholderPage title="My Reviews" />,
+                element: <MyReviews />,
             },
 
-            // Admin Routes
+            // Admin Routes - Protected
             {
-                path: routes.ADMIN.routes.users.path,
-                element: <ViewAllUsers />,
-            },
-            {
-                path: routes.ADMIN.routes.books.path,
-                element: <ViewAllBooks />,
-            },
-            {
-                path: routes.ADMIN.routes.bookDetails.path,
-                element: <BookDetails />,
-            },
-            {
-                path: routes.ADMIN.routes.createBook.path,
-                element: <AddNewBook />,
-            },
-            {
-                path: routes.ADMIN.routes.categories.path,
-                element: <ViewAllCategories />,
-            },
-            {
-                path: routes.ADMIN.routes.booksByCategory.path,
-                element: <CategoryDetails />,
-            },
-            {
-                path: routes.ADMIN.routes.purchases.path,
-                element: <ViewPurchaseOrders />,
-            },
-            {
-                path: routes.ADMIN.routes.stats.path,
-                element: <ViewStats />,
+                element: <ProtectedRoute requireAdmin={true} />,
+                children: [
+                    {
+                        path: routes.ADMIN.routes.users.path,
+                        element: <ViewAllUsers />,
+                    },
+                    {
+                        path: routes.ADMIN.routes.books.path,
+                        element: <ViewAllBooks />,
+                    },
+                    {
+                        path: routes.ADMIN.routes.bookDetails.path,
+                        element: <BookDetails />,
+                    },
+                    {
+                        path: routes.ADMIN.routes.createBook.path,
+                        element: <AddNewBook />,
+                    },
+                    {
+                        path: routes.ADMIN.routes.categories.path,
+                        element: <ViewAllCategories />,
+                    },
+                    {
+                        path: routes.ADMIN.routes.booksByCategory.path,
+                        element: <CategoryDetails />,
+                    },
+                    {
+                        path: routes.ADMIN.routes.purchases.path,
+                        element: <ViewPurchaseOrders />,
+                    },
+                    {
+                        path: routes.ADMIN.routes.stats.path,
+                        element: <ViewStats />,
+                    },
+                ],
             },
 
             // Core Routes

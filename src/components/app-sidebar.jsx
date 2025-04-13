@@ -26,7 +26,7 @@ import { selectUser } from "@/store/slices/auth.slice";
 
 export function AppSidebar({ ...props }) {
     const data = useSelector(selectUser);
-    const isAdmin = data.userType.name === USER_TYPES.ADMIN;
+    const isAdmin = data?.userType?.name === USER_TYPES.ADMIN;
 
     return (
         <Sidebar variant="inset" {...props}>
