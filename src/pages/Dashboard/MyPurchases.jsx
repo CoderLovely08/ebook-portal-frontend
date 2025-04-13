@@ -158,7 +158,7 @@ const MyPurchases = () => {
                                                 <span>{new Date(purchase.purchaseDate).toLocaleDateString()}</span>
                                             </div>
                                         </TableCell>
-                                        <TableCell>${purchase.book.price.toFixed(2)}</TableCell>
+                                        <TableCell>₹{purchase.book.price.toFixed(2)}</TableCell>
                                         <TableCell>{getStatusBadge(purchase.status)}</TableCell>
                                         <TableCell className="text-right">
                                             {purchase.status === ORDER_STATUS.COMPLETED && (

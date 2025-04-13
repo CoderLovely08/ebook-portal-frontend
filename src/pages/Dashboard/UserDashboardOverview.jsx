@@ -25,9 +25,6 @@ const UserDashboardOverview = () => {
     QUERY_KEYS.USER.STATS
   );
 
-  console.log(userStats);
-  
-
   const stats = [
     {
       title: "Books in Library",
@@ -45,7 +42,7 @@ const UserDashboardOverview = () => {
     },
     {
       title: "Reviews",
-      value: userStats?.reviewCount || 0,
+      value: userStats?.reviewsCount || 0,
       icon: Star,
       link: routes.USER_CONTENT.routes.reviews.path,
       color: "bg-yellow-500",

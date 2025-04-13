@@ -30,7 +30,8 @@ export const useLogin = () => {
 
         onSuccess: (data) => {
             dispatch(setUser(data?.data));
-            if (data?.data?.role === USER_TYPES.ADMIN) {
+            
+            if (data?.data?.userType?.name === USER_TYPES.ADMIN) {
                 navigate(routes.DASHBOARD.routes.overview.path);
             } else {
                 navigate(routes.USER_DASHBOARD.routes.home.path);

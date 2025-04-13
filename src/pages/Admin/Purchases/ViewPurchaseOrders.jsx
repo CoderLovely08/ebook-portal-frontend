@@ -11,62 +11,103 @@ import LoadingSpinner from "@/components/custom/utils/LoadingSpiner";
 import { format } from "date-fns";
 import { useCustomMutation } from "@/hooks/common/useCustomMutation";
 import { Link } from "react-router-dom";
+import PurchaseActionButton from "./components/PurchaseActionButton";
 // import { toast } from "sonner";
 
 const PurchaseCard = ({ purchase }) => {
     return (
         <Card className="p-6 hover:border-primary/50 border border-transparent transition-all duration-200">
-            <div className="flex items-start justify-between">
-                <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-primary/10 rounded-lg">
-                        <ShoppingCart className="h-6 w-6 text-primary" />
+            <div className="flex flex-col space-y-4">
+                {/* Header Section */}
+                <div className="flex items-start justify-between">
+                    <div className="flex items-center space-x-3">
+                        <div className="p-2 bg-primary/10 rounded-lg">
+                            <ShoppingCart className="h-6 w-6 text-primary" />
+                        </div>
+                        <div>
+                            <h3 className="font-semibold text-lg">
+                                <Link to={routes.ADMIN.routes.bookDetails.getPath(purchase.book.id)}>
+                                    <Button variant="link" className="p-0">
+                                        {purchase.book.title}
+                                        <ExternalLink className="h-4 w-4 ml-1" />
+                                    </Button>
+                                </Link>
+                            </h3>
+                            <p className="text-sm text-gray-500">by {purchase.book.author}</p>
+                        </div>
                     </div>
-                    <div>
-                        <h3 className="font-semibold text-lg">
-                            <Link to={routes.ADMIN.routes.bookDetails.getPath(purchase.book.id)}>
-                                <Button variant="link" className="p-0">
-                                    {purchase.book.title} {`(by: ${purchase.book.author})`}
-                                     <ExternalLink className="h-4 w-4" />
-                                </Button>
-                            </Link>
-                        </h3>
-                        <div className="flex items-center gap-2 mt-1">
-                            <Badge variant="secondary">
-                                {purchase.user.fullName}
-                            </Badge>
-                            <Badge variant="outline">
-                                ₹{purchase.book.price}
-                            </Badge>
+                    <Badge
+                        variant={
+                            purchase.status === ORDER_STATUS.COMPLETED
+                                ? "success"
+                                : purchase.status === ORDER_STATUS.CANCELLED
+                                ? "destructive"
+                                : "warning"
+                        }
+                    >
+                        {purchase.status}
+                    </Badge>
+                </div>
+
+                {/* Book Details Section */}
+                <div className="flex items-center space-x-4">
+                    <div className="h-20 w-16 rounded-md overflow-hidden bg-gray-100">
+                        <img
+                            src={purchase.book.coverImage}
+                            alt={purchase.book.title}
+                            className="h-full w-full object-cover"
+                        />
+                    </div>
+                    <div className="flex-1">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <p className="text-sm font-medium text-gray-500">Price</p>
+                                <p className="text-lg font-semibold">
+                                    {purchase.book.isFree ? "Free" : `₹${purchase.book.price}`}
+                                </p>
+                            </div>
+                            <div>
+                                <p className="text-sm font-medium text-gray-500">Order ID</p>
+                                <p className="text-sm font-mono">{purchase.id}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <Badge
-                    variant={
-                        purchase.status === ORDER_STATUS.COMPLETED
-                            ? "success"
-                            : purchase.status === ORDER_STATUS.CANCELLED
-                            ? "destructive"
-                            : "warning"
-                    }
-                >
-                    {purchase.status}
-                </Badge>
-            </div>
 
-            <div className="mt-4 text-sm text-gray-600">
-                <p>Order ID: {purchase.id}</p>
-                <p>Book Author: {purchase.book.author}</p>
-                <p>User Email: {purchase.user.email}</p>
-            </div>
+                {/* User Details Section */}
+                <div className="border-t pt-4">
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <p className="text-sm font-medium text-gray-500">Customer</p>
+                            <div className="flex items-center space-x-2">
+                                <Badge variant="secondary">{purchase.user.fullName}</Badge>
+                                <span className="text-sm text-gray-500">({purchase.user.email})</span>
+                            </div>
+                        </div>
+                        <div>
+                            <p className="text-sm font-medium text-gray-500">Purchase Date</p>
+                            <p className="text-sm">
+                                {format(new Date(purchase.purchaseDate), "MMM d, yyyy HH:mm")}
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
-            <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
-                <span>
-                    Purchased on{" "}
-                    {format(
-                        new Date(purchase.purchaseDate),
-                        "MMM d, yyyy HH:mm"
-                    )}
-                </span>
+                {/* Action Section */}
+                <div className="border-t pt-4 flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            asChild
+                        >
+                            <Link to={routes.ADMIN.routes.bookDetails.getPath(purchase.book.id)}>
+                                View Book
+                            </Link>
+                        </Button>
+                    </div>
+                    <PurchaseActionButton purchase={purchase} />
+                </div>
             </div>
         </Card>
     );

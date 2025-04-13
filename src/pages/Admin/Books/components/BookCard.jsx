@@ -2,6 +2,7 @@ import PdfViewerModal from "@/components/custom/ui/PdfDocViewer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import BuyNow from "@/pages/Catalog/components/BuyNow";
 import { routes } from "@/utils/app.constants";
 import { format } from "date-fns";
 import { BookOpen, ExternalLink, ShoppingCart } from "lucide-react";
@@ -26,7 +27,7 @@ const BookCard = ({ book }) => {
                             <h3 className="text-xl font-semibold flex items-center gap-2">
                                 {book.title}
                                 <Link
-                                    to={routes.ADMIN.routes.bookDetails.getPath(
+                                    to={routes.CATALOG.routes.bookDetails.getPath(
                                         book.id
                                     )}
                                 >
@@ -60,7 +61,7 @@ const BookCard = ({ book }) => {
 
                 <p className="text-gray-600 line-clamp-2">{book.description}</p>
 
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between flex-wrap gap-2">
                     <div className="flex items-center space-x-4 text-sm text-gray-500">
                         <div className="flex items-center">
                             <span className="font-medium">
@@ -83,10 +84,7 @@ const BookCard = ({ book }) => {
                             </Button>
                         </PdfViewerModal>
                     ) : (
-                        <Button size="sm">
-                            <ShoppingCart className="h-4 w-4 mr-2" />
-                            Buy Now
-                        </Button>
+                        <BuyNow bookId={book.id} price={book.price} />
                     )}
                 </div>
             </div>

@@ -2,260 +2,189 @@ import React, { useState } from "react";
 import Container from "@/components/custom/utils/Container";
 import { useFetch } from "@/hooks/common/useFetch";
 import { apiRoutes, QUERY_KEYS } from "@/utils/app.constants";
-import { Book, Search, Star, Edit, Trash2 } from "lucide-react";
+import { Search, Star, MessageSquare, Edit, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card } from "@/components/ui/card";
+import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import { routes } from "@/utils/app.constants";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import LoadingSpinner from "@/components/custom/utils/LoadingSpiner";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const MyReviews = () => {
     const [searchTerm, setSearchTerm] = useState("");
+    const [ratingFilter, setRatingFilter] = useState("all");
     const [sortBy, setSortBy] = useState("recent");
-    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-    const [selectedReview, setSelectedReview] = useState(null);
-    const [editForm, setEditForm] = useState({
-        rating: 0,
-        comment: ""
-    });
 
-    const { responseData: reviewsData, responseIsLoading } = useFetch(
-        apiRoutes.REVIEWS.BASE,
-        QUERY_KEYS.REVIEWS.ALL
+    const { responseData: reviews, responseIsLoading } = useFetch(
+        apiRoutes.USER_CONTENT.REVIEWS,
+        QUERY_KEYS.USER.REVIEWS
     );
 
-    const filteredReviews = reviewsData?.reviews?.filter((review) => {
-        return review.book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const filteredReviews = reviews?.filter((review) => {
+        const matchesSearch = review.book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
             review.book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
             review.comment.toLowerCase().includes(searchTerm.toLowerCase());
+        
+        if (ratingFilter === "all") return matchesSearch;
+        return matchesSearch && review.rating === parseInt(ratingFilter);
     });
 
     const sortedReviews = [...(filteredReviews || [])].sort((a, b) => {
         if (sortBy === "recent") return new Date(b.createdAt) - new Date(a.createdAt);
-        if (sortBy === "title") return a.book.title.localeCompare(b.book.title);
-        if (sortBy === "author") return a.book.author.localeCompare(b.book.author);
-        if (sortBy === "rating") return b.rating - a.rating;
+        if (sortBy === "oldest") return new Date(a.createdAt) - new Date(b.createdAt);
+        if (sortBy === "rating-high") return b.rating - a.rating;
+        if (sortBy === "rating-low") return a.rating - b.rating;
         return 0;
     });
 
-    const handleEditClick = (review) => {
-        setSelectedReview(review);
-        setEditForm({
-            rating: review.rating,
-            comment: review.comment
-        });
-        setIsEditDialogOpen(true);
-    };
-
-    const handleDeleteClick = (review) => {
-        setSelectedReview(review);
-        setIsDeleteDialogOpen(true);
-    };
-
-    const handleEditSubmit = () => {
-        // Here you would call an API to update the review
-        console.log("Updating review:", selectedReview.id, editForm);
-        setIsEditDialogOpen(false);
-    };
-
-    const handleDeleteSubmit = () => {
-        // Here you would call an API to delete the review
-        console.log("Deleting review:", selectedReview.id);
-        setIsDeleteDialogOpen(false);
-    };
-
-    const renderStars = (rating) => {
-        return Array(5).fill(0).map((_, index) => (
-            <Star 
-                key={index} 
-                className={`h-4 w-4 ${index < rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`} 
-            />
-        ));
-    };
+    if (responseIsLoading) {
+        return <LoadingSpinner />;
+    }
 
     return (
         <Container>
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold text-gray-800">My Reviews</h1>
-                <Button asChild>
-                    <Link to={routes.CATALOG.routes.books.path}>Browse Books</Link>
-                </Button>
-            </div>
-
-            {/* Search and Filter */}
-            <div className="flex flex-col md:flex-row gap-4 mb-6">
-                <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                    <Input
-                        placeholder="Search by book title, author, or review content..."
-                        className="pl-10"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                </div>
-                <div className="flex gap-2">
-                    <Select value={sortBy} onValueChange={setSortBy}>
-                        <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="Sort by" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="recent">Most Recent</SelectItem>
-                            <SelectItem value="title">Book Title (A-Z)</SelectItem>
-                            <SelectItem value="author">Author (A-Z)</SelectItem>
-                            <SelectItem value="rating">Rating (High-Low)</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-            </div>
-
-            {/* Reviews List */}
-            {responseIsLoading ? (
-                <div className="space-y-4">
-                    {[1, 2, 3].map((i) => (
-                        <Card key={i}>
-                            <CardContent className="p-6">
-                                <div className="space-y-4">
-                                    <div className="flex justify-between">
-                                        <Skeleton className="h-6 w-1/3" />
-                                        <Skeleton className="h-6 w-1/4" />
-                                    </div>
-                                    <Skeleton className="h-4 w-full" />
-                                    <Skeleton className="h-4 w-3/4" />
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
-            ) : sortedReviews?.length > 0 ? (
-                <div className="space-y-4">
-                    {sortedReviews.map((review) => (
-                        <Card key={review.id}>
-                            <CardHeader className="pb-2">
-                                <div className="flex justify-between items-start">
-                                    <div>
-                                        <CardTitle className="text-lg">{review.book.title}</CardTitle>
-                                        <CardDescription>{review.book.author}</CardDescription>
-                                    </div>
-                                    <div className="flex items-center">
-                                        {renderStars(review.rating)}
-                                    </div>
-                                </div>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-gray-700">{review.comment}</p>
-                                <p className="text-sm text-gray-500 mt-2">
-                                    Posted on {new Date(review.createdAt).toLocaleDateString()}
-                                </p>
-                            </CardContent>
-                            <CardFooter className="flex justify-end gap-2">
-                                <Button 
-                                    variant="outline" 
-                                    size="sm"
-                                    onClick={() => handleEditClick(review)}
-                                >
-                                    <Edit className="h-4 w-4 mr-1" />
-                                    Edit
-                                </Button>
-                                <Button 
-                                    variant="outline" 
-                                    size="sm"
-                                    onClick={() => handleDeleteClick(review)}
-                                >
-                                    <Trash2 className="h-4 w-4 mr-1" />
-                                    Delete
-                                </Button>
-                            </CardFooter>
-                        </Card>
-                    ))}
-                </div>
-            ) : (
-                <Card>
-                    <CardContent className="flex flex-col items-center justify-center py-12">
-                        <Star className="h-12 w-12 text-gray-400 mb-4" />
-                        <h3 className="text-lg font-medium mb-2">No reviews yet</h3>
-                        <p className="text-gray-500 mb-4">Start reviewing books you've read</p>
-                        <Button asChild>
-                            <Link to={routes.CATALOG.routes.books.path}>Browse Books</Link>
-                        </Button>
-                    </CardContent>
-                </Card>
-            )}
-
-            {/* Edit Review Dialog */}
-            <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Edit Review</DialogTitle>
-                        <DialogDescription>
-                            Update your review for {selectedReview?.book.title}
-                        </DialogDescription>
-                    </DialogHeader>
-                    <div className="space-y-4 py-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="rating">Rating</Label>
-                            <div className="flex gap-1">
-                                {[1, 2, 3, 4, 5].map((star) => (
-                                    <Button
-                                        key={star}
-                                        variant="ghost"
-                                        size="sm"
-                                        className="p-0 h-auto"
-                                        onClick={() => setEditForm({ ...editForm, rating: star })}
-                                    >
-                                        <Star 
-                                            className={`h-6 w-6 ${star <= editForm.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`} 
-                                        />
-                                    </Button>
-                                ))}
-                            </div>
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="comment">Review</Label>
-                            <Textarea
-                                id="comment"
-                                value={editForm.comment}
-                                onChange={(e) => setEditForm({ ...editForm, comment: e.target.value })}
-                                rows={4}
-                            />
-                        </div>
+            <div className="space-y-6">
+                {/* Header Section */}
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 className="text-3xl font-bold">My Reviews</h1>
+                        <p className="text-gray-500 mt-1">
+                            Manage and view your book reviews
+                        </p>
                     </div>
-                    <DialogFooter>
-                        <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
-                            Cancel
-                        </Button>
-                        <Button onClick={handleEditSubmit}>
-                            Save Changes
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+                    <Button asChild>
+                        <Link to={routes.CATALOG.routes.books.path}>
+                            Browse Books
+                        </Link>
+                    </Button>
+                </div>
 
-            {/* Delete Review Dialog */}
-            <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Delete Review</DialogTitle>
-                        <DialogDescription>
-                            Are you sure you want to delete your review for {selectedReview?.book.title}?
-                            This action cannot be undone.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                        <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
-                            Cancel
+                {/* Filters */}
+                <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="relative flex-1">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                        <Input
+                            placeholder="Search by book title, author, or review content..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="pl-10"
+                        />
+                    </div>
+                    <div className="flex gap-2">
+                        <Select value={ratingFilter} onValueChange={setRatingFilter}>
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Filter by rating" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">All Ratings</SelectItem>
+                                <SelectItem value="5">5 Stars</SelectItem>
+                                <SelectItem value="4">4 Stars</SelectItem>
+                                <SelectItem value="3">3 Stars</SelectItem>
+                                <SelectItem value="2">2 Stars</SelectItem>
+                                <SelectItem value="1">1 Star</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <Select value={sortBy} onValueChange={setSortBy}>
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Sort by" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="recent">Most Recent</SelectItem>
+                                <SelectItem value="oldest">Oldest First</SelectItem>
+                                <SelectItem value="rating-high">Rating (High-Low)</SelectItem>
+                                <SelectItem value="rating-low">Rating (Low-High)</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </div>
+
+                {/* Reviews Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {sortedReviews?.map((review) => (
+                        <Card key={review.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                            <div className="flex items-start space-x-4 p-4">
+                                {/* Book Cover */}
+                                <div className="h-24 w-16 rounded-md overflow-hidden bg-gray-100 flex-shrink-0">
+                                    <img
+                                        src={review.book.coverImage}
+                                        alt={review.book.title}
+                                        className="h-full w-full object-cover"
+                                    />
+                                </div>
+
+                                {/* Review Content */}
+                                <div className="flex-1 space-y-2">
+                                    <div className="flex items-start justify-between">
+                                        <div>
+                                            <h3 className="font-semibold">
+                                                <Link 
+                                                    to={routes.CATALOG.routes.bookDetails.getPath(review.book.id)}
+                                                    className="hover:text-primary"
+                                                >
+                                                    {review.book.title}
+                                                </Link>
+                                            </h3>
+                                            <p className="text-sm text-gray-500">by {review.book.author}</p>
+                                        </div>
+                                        <div className="flex items-center space-x-1">
+                                            {[...Array(5)].map((_, i) => (
+                                                <Star
+                                                    key={i}
+                                                    className={`h-4 w-4 ${
+                                                        i < review.rating
+                                                            ? "text-yellow-400 fill-yellow-400"
+                                                            : "text-gray-300"
+                                                    }`}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <p className="text-sm text-gray-600 line-clamp-2">
+                                        {review.comment}
+                                    </p>
+
+                                    <div className="flex items-center justify-between text-sm text-gray-500">
+                                        <span>
+                                            {format(new Date(review.createdAt), "MMM d, yyyy")}
+                                        </span>
+                                        <div className="flex items-center space-x-2">
+                                            <Button variant="ghost" size="sm">
+                                                <Edit className="h-4 w-4" />
+                                            </Button>
+                                            <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-600">
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </Card>
+                    ))}
+                </div>
+
+                {/* Empty State */}
+                {(!sortedReviews || sortedReviews.length === 0) && (
+                    <div className="text-center py-12">
+                        <MessageSquare className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                        <h3 className="text-lg font-medium text-gray-900">
+                            No reviews yet
+                        </h3>
+                        <p className="mt-1 text-gray-500">
+                            {searchTerm || ratingFilter !== "all"
+                                ? "Try adjusting your filters"
+                                : "Start reviewing books to share your thoughts"}
+                        </p>
+                        <Button className="mt-4" asChild>
+                            <Link to={routes.CATALOG.routes.books.path}>
+                                Browse Books
+                            </Link>
                         </Button>
-                        <Button variant="destructive" onClick={handleDeleteSubmit}>
-                            Delete
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+                    </div>
+                )}
+            </div>
         </Container>
     );
 };

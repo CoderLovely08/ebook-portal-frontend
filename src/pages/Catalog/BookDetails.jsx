@@ -6,12 +6,20 @@ import {
   Clock,
   Edit,
   Plus,
+  MessageSquare,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { Separator } from "@/components/ui/separator";
-import { Card } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { useFetch } from "@/hooks/common/useFetch";
 import { useParams } from "react-router-dom";
 import { apiRoutes, QUERY_KEYS, USER_TYPES } from "@/utils/app.constants";
@@ -21,16 +29,29 @@ import NotFoundPage from "@/components/custom/utils/NotFoundPage";
 import { selectUser } from "@/store/slices/auth.slice";
 import { useSelector } from "react-redux";
 import PdfViewerModal from "@/components/custom/ui/PdfDocViewer";
+import ReviewButton from "@/components/custom/ui/ReviewButton";
+import { useState } from "react";
+import ActionButton from "./components/ActionButton";
 
 const BookDetails = () => {
   const { id } = useParams();
   const isAdmin = useSelector(selectUser).userType.name === USER_TYPES.ADMIN;
+  const [reviewRefreshKey, setReviewRefreshKey] = useState(0);
 
   const {
     responseData: book,
     responseIsLoading,
     responseError,
   } = useFetch(apiRoutes.BOOKS.GET_BY_ID(id), QUERY_KEYS.BOOKS.DETAIL(id));
+
+  const { responseData: reviews, responseIsLoading: reviewsLoading } = useFetch(
+    apiRoutes.REVIEWS.GET_BOOK_REVIEWS(id),
+    [...QUERY_KEYS.REVIEWS.BOOK_REVIEWS(id), reviewRefreshKey]
+  );
+
+  const handleReviewAdded = () => {
+    setReviewRefreshKey((prev) => prev + 1);
+  };
 
   if (responseIsLoading) {
     return <LoadingSpinner />;
@@ -52,6 +73,7 @@ const BookDetails = () => {
     reviewCount,
     publishedDate,
     filePath,
+    isPurchased,
   } = book;
 
   return (
@@ -78,30 +100,15 @@ const BookDetails = () => {
                     </span>
                   </div>
                 </div>
-                {!isAdmin ? (
-                  <div className="space-y-2">
-                    <Button className="w-full" size="lg">
-                      {isFree ? (
-                        <>
-                          <BookOpen className="mr-2 h-5 w-5" />
-                          Read Now
-                        </>
-                      ) : (
-                        <>
-                          <ShoppingCart className="mr-2 h-5 w-5" />
-                          Buy for ₹{price}
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                ) : (
-                  <PdfViewerModal path={filePath} title={title}>
-                    <Button className="w-full">
-                      <BookOpen className="mr-2 h-5 w-5" />
-                      Read Now
-                    </Button>
-                  </PdfViewerModal>
-                )}
+                <ActionButton
+                  id={id}
+                  filePath={filePath}
+                  title={title}
+                  isAdmin={isAdmin}
+                  isFree={isFree}
+                  price={price}
+                  isPurchased={isPurchased}
+                />
               </div>
             </Card>
           </div>
@@ -170,23 +177,67 @@ const BookDetails = () => {
             </div>
           </div>
 
-          {/* Reviews Section Placeholder */}
+          {/* Reviews Section */}
           <Separator />
           <div>
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-2xl font-semibold">Reviews</h2>
               {!isAdmin && (
-                <Button variant="outline">
-                  <Plus className="mr-2 h-5 w-5" />
-                  Add Review
-                </Button>
+                <ReviewButton bookId={id} onReviewAdded={handleReviewAdded} />
               )}
             </div>
-            {reviewCount === 0 ? (
+
+            {reviewsLoading ? (
+              <div className="space-y-4">
+                <Card className="p-4">
+                  <div className="animate-pulse space-y-3">
+                    <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                  </div>
+                </Card>
+                <Card className="p-4">
+                  <div className="animate-pulse space-y-3">
+                    <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                  </div>
+                </Card>
+              </div>
+            ) : reviews?.length > 0 ? (
+              <div className="space-y-4">
+                {reviews.map((review) => (
+                  <Card key={review.id} className="p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="flex items-center">
+                        <div className="flex mr-2">
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`h-4 w-4 ${
+                                i < review.rating
+                                  ? "text-yellow-400 fill-yellow-400"
+                                  : "text-gray-300"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                        <span className="font-medium">{review.user.name}</span>
+                      </div>
+                      <span className="text-sm text-gray-500">
+                        {format(new Date(review.createdAt), "MMM dd, yyyy")}
+                      </span>
+                    </div>
+                    <p className="text-gray-700">{review.comment}</p>
+                  </Card>
+                ))}
+              </div>
+            ) : (
               <Card className="p-6 text-center text-gray-500">
+                <MessageSquare className="h-12 w-12 mx-auto mb-4 text-gray-400" />
                 <p>No reviews yet. Be the first to review this book!</p>
               </Card>
-            ) : null}
+            )}
           </div>
         </div>
       </div>
