@@ -344,20 +344,6 @@ VITE_APP_VERSION=1.0.0
 /admin/stats → Analytics Dashboard
 ```
 
-## State Management
-
-### Redux Store Structure
-
-```javascript
-{
-  auth: {
-    user: null | User,
-    token: null | string,
-    isAuthenticated: boolean
-  }
-}
-```
-
 ### React Query Usage
 
 - Server state caching and synchronization
@@ -381,20 +367,6 @@ VITE_APP_VERSION=1.0.0
 - **XSS Protection**: Sanitized user inputs and outputs
 - **CSRF Protection**: Token-based request authentication
 
-## Deployment
-
-The application is configured for deployment on Vercel with automatic deployments from the main branch.
-
-### Vercel Configuration
-
-```json
-{
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "framework": "vite"
-}
-```
-
 ## Contributing
 
 1. Fork the repository
@@ -402,15 +374,6 @@ The application is configured for deployment on Vercel with automatic deployment
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
-## Browser Support
-
-- Chrome (last 2 versions)
-- Firefox (last 2 versions)
-- Safari (last 2 versions)
-- Edge (last 2 versions)
-
-## License
 
 ## Author
 
